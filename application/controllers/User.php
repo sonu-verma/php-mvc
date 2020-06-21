@@ -24,19 +24,20 @@ class User extends framework{
     }
 
     public function register(){
+
+        
         $userData = [
-           'username' => encode_decode($this->input('username'), 1),
-           'password' =>  encode_decode($this->input('password'),1),
-           'email' =>   encode_decode($this->input('email'),1),
-           'contact' =>   encode_decode($this->input('contact'),1),
+           'username' => encode_decode($_POST['username'], 1),
+           'password' =>  encode_decode($_POST['password'],1),
+           'email' =>   encode_decode($_POST['email'],1),
+           'contact' =>   encode_decode($_POST['contact'],1),
            'usernameError' =>  '',
            'passwordError' =>  '',
            'emailError' =>  '',
            'contactError' =>  ''
            
         ];
-
-
+        
         if(empty($userData['username'])){
             $userData['usernameError'] = "Username is required";
         }else{
@@ -65,7 +66,7 @@ class User extends framework{
                 $userData['contactError'] = "contact should be unique";
             }
         }
-
+    
         if(empty($userData['usernameError']) && empty($userData['passwordError']) && empty($userData['emailError']) && empty($userData['contactError'])){
             $this->data->insert($userData);
             $output  = array('status'=>true,'msg'=>"successfully inseted in db.",'error' => '');
@@ -90,9 +91,15 @@ class User extends framework{
     }
 
     public function profile($id){
-    
-        if($this->data->getById($id)){
-            $output  = array('status'=>true,'msg'=>"match.",'data'=>$this->data->getById($id));
+        $values = [];
+        
+        $userInfo = $this->data->getById($id);
+        if($userInfo){
+            $values['username']  = encode_decode($userInfo->username,0);
+            $values['email']  = encode_decode($userInfo->email,0);
+            $values['contact']  = encode_decode($userInfo->contact,0);
+        
+            $output  = array('status'=>true,'msg'=>"match.",'data'=>$values);
         }else{
             $output  = array('status'=>false,'msg'=>"data not found.",'data'=>'');
         }

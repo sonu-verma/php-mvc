@@ -53,5 +53,13 @@
                 return false;
             }
         }
+
+        public function insertToken($data){
+            if($this->query("INSERT INTO access_tokens(user_id, token, expires_at, created_at, updated_at) VALUES(?, ?, ?, ?, ?)",[ $data['user_id'],$data['token_id'],$data['expiry'],$data['created_at'],$data['updated_at']])){
+                return true;
+            }else{
+                return false;
+            }
+        }        
     }
 ?>

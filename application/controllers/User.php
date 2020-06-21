@@ -4,6 +4,7 @@ class User extends framework{
      
     public function __construct(){
         header("Access-Control-Allow-Origin: *");
+
         $this->data = $this->model('userModel');
         $this->helper("custom");
 
@@ -79,13 +80,34 @@ class User extends framework{
 
     public function login(){
     
-        $username = encode_decode($this->input('username'), 1);
+        $username = encode_decode($this->input('username'),1);
         $password = encode_decode($this->input('password'),1);
         
         if($this->data->checkUser($username,$password)){
-            $output  = array('status'=>true,'msg'=>"match.");
+            $userData = $this->data->fetch();
+            $user_id  = $userData->id;
+            $token_id = md5(uniqid());
+            $expires_at = time() + (60 * 60 * 24 ); // 1 day
+            $created_at = time();
+            $updated_at = time();
+            $sesssionData =  [
+                'user_id' => $user_id ,
+                'token_id' => $token_id,
+                'expiry' => $expires_at,
+                'created_at' => $created_at,
+                'updated_at' => $updated_at
+            ];
+
+            $returnType = $this->data->insertToken($sesssionData);
+            if($returnType){
+                $output  = array('status'=>true,'msg'=>"match.",'token_id'=>$token_id);
+            }else{
+                $output  = array('status'=>false,'msg'=>"something went wrong.",'token_id'=>'');
+            }
+            
+           
         }else{
-            $output  = array('status'=>false,'msg'=>"data not found.");
+            $output  = array('status'=>false,'msg'=>"data not found.",'token_id'=>'');
         }
         echo json_encode($output);
     }

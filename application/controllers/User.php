@@ -95,7 +95,7 @@ class User extends framework{
         }else{
             $output  = array('status'=>false,'msg'=>"data not found.",'data'=>'');
         }
-        return json_encode($output);
+        echo json_encode($output);
     }
 }
 ?>

@@ -4,7 +4,7 @@ class User extends framework{
      
     public function __construct(){
         header("Access-Control-Allow-Origin: *");
-
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, x-access_token");
         $this->data = $this->model('userModel');
         $this->helper("custom");
 
@@ -112,7 +112,7 @@ class User extends framework{
 
     public function profile($id){
         $headersData = getallheaders();
-        $token_id = $headersData['x-access_token'];
+        $token_id = $headersData['access_token'];
         $checkValidUser =  $this->data->checkToken($token_id);
 
         if($checkValidUser){

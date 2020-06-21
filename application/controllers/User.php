@@ -86,7 +86,7 @@ class User extends framework{
         if($this->data->checkUser($username,$password)){
             $userData = $this->data->fetch();
             $user_id  = $userData->id;
-            $token_id = md5(uniqid());
+            $token_id = md5(uniqid()); // random value
             $expires_at = time() + (60 * 60 * 24 ); // 1 day
             $created_at = time();
             $updated_at = time();

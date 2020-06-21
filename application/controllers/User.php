@@ -27,10 +27,10 @@ class User extends framework{
 
         
         $userData = [
-           'username' => encode_decode($_POST['username'], 1),
-           'password' =>  encode_decode($_POST['password'],1),
-           'email' =>   encode_decode($_POST['email'],1),
-           'contact' =>   encode_decode($_POST['contact'],1),
+           'username' => encode_decode($this->input('username'), 1),
+           'password' =>  encode_decode($this->input('password'),1),
+           'email' =>   encode_decode($this->input('email'),1),
+           'contact' =>   encode_decode($this->input('contact'),1),
            'usernameError' =>  '',
            'passwordError' =>  '',
            'emailError' =>  '',

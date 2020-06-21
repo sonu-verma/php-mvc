@@ -3,6 +3,7 @@
 class User extends framework{
      
     public function __construct(){
+        header("Access-Control-Allow-Origin: *");
         $this->data = $this->model('userModel');
         $this->helper("custom");
 

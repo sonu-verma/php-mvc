@@ -1,6 +1,5 @@
-<!-- database configration -->
-
 <?php
+   //  database configration
 
     define("HOST","localhost");
     define("USER","user");

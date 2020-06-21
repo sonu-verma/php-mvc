@@ -60,6 +60,16 @@
             }else{
                 return false;
             }
-        }        
+        }   
+        
+        
+
+        public function checkToken($token_id){
+            if($this->query("select * from access_tokens where token = '".$token_id."'")){
+                return $this->fetch();
+            }else{
+                return false;
+            }
+        }
     }
 ?>

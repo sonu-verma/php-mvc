@@ -113,18 +113,31 @@ class User extends framework{
     }
 
     public function profile($id){
-        $values = [];
-        
-        $userInfo = $this->data->getById($id);
-        if($userInfo){
-            $values['username']  = encode_decode($userInfo->username,0);
-            $values['email']  = encode_decode($userInfo->email,0);
-            $values['contact']  = encode_decode($userInfo->contact,0);
-        
-            $output  = array('status'=>true,'msg'=>"match.",'data'=>$values);
+        $token_id =$this->input('access_token');
+        $checkValidUser =  $this->data->checkToken($token_id);
+
+        if($checkValidUser){
+            $currentTime = time();
+            if(($currentTime < $checkValidUser->expires_at) && ($id ==  $checkValidUser->user_id)){
+                $values = [];
+                $userInfo = $this->data->getById($id);
+                if($userInfo){
+                    $values['username']  = encode_decode($userInfo->username,0);
+                    $values['email']  = encode_decode($userInfo->email,0);
+                    $values['contact']  = encode_decode($userInfo->contact,0);
+                
+                    $output  = array('status'=>true,'msg'=>"match.",'data'=>$values);
+                }else{
+                    $output  = array('status'=>false,'msg'=>"data not found.",'data'=>'');
+                }
+            }else{
+                $output  = array('status'=>false,'msg'=>"not an valid user.",'data'=>'');
+            }
+            
         }else{
-            $output  = array('status'=>false,'msg'=>"data not found.",'data'=>'');
+            $output  = array('status'=>false,'msg'=>"not an valid user.",'data'=>'');
         }
+        
         echo json_encode($output);
     }
 }

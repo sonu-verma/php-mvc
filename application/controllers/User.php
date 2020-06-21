@@ -77,14 +77,15 @@ class User extends framework{
 
     public function login(){
     
-        $username = ' sonuverma ';
-        $password = 'sonuverma';
+        $username = encode_decode($this->input('username'), 1);
+        $password = encode_decode($this->input('password'),1);
+        
         if($this->data->checkUser($username,$password)){
             $output  = array('status'=>true,'msg'=>"match.");
         }else{
             $output  = array('status'=>false,'msg'=>"data not found.");
         }
-        return json_encode($output);
+        echo json_encode($output);
     }
 
     public function profile($id){

@@ -31,8 +31,12 @@
         }
 
         public function checkUser($username,$password){
-            if($this->query("select * from users where username=? and password=?",[$username,$password])){
-                return $this->fetch();
+           if($this->query("select * from users where username= '".$username."' and password= '".$password."'")){
+               if($this->rowCount()  > 0){
+                   return true;
+               }else{
+                   return false;
+               }
             }else{
                 return false;
             }

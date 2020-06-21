@@ -23,18 +23,18 @@ class User extends framework{
     }
 
     public function register(){
-    
         $userData = [
-           'username' =>  'rahul',
-           'password' =>  'sonttuverma',
-           'email' =>  'sonuvettrma@gmail.com',
-           'contact' =>  '95455077850',
+           'username' => encode_decode($this->input('username'), 1),
+           'password' =>  encode_decode($this->input('password'),1),
+           'email' =>   encode_decode($this->input('email'),1),
+           'contact' =>   encode_decode($this->input('contact'),1),
            'usernameError' =>  '',
            'passwordError' =>  '',
            'emailError' =>  '',
            'contactError' =>  ''
            
         ];
+
 
         if(empty($userData['username'])){
             $userData['usernameError'] = "Username is required";
@@ -66,12 +66,13 @@ class User extends framework{
         }
 
         if(empty($userData['usernameError']) && empty($userData['passwordError']) && empty($userData['emailError']) && empty($userData['contactError'])){
-            echo 'form submit';
             $this->data->insert($userData);
-        }else{
-            echo 'error';
-        }
+            $output  = array('status'=>true,'msg'=>"successfully inseted in db.",'error' => '');
         
+        }else{
+           $output  = array('status'=>false,'msg'=>"something went wrong",'errors' => $userData);
+        }
+        echo json_encode($output);
     }
 
     public function login(){
@@ -79,19 +80,21 @@ class User extends framework{
         $username = ' sonuverma ';
         $password = 'sonuverma';
         if($this->data->checkUser($username,$password)){
-            echo "found";
+            $output  = array('status'=>true,'msg'=>"match.");
         }else{
-            echo "not found";
+            $output  = array('status'=>false,'msg'=>"data not found.");
         }
+        return json_encode($output);
     }
 
     public function profile($id){
     
         if($this->data->getById($id)){
-            print_r($this->data->getById($id));
-         }else{
-             echo "No data found.";
-         }
+            $output  = array('status'=>true,'msg'=>"match.",'data'=>$this->data->getById($id));
+        }else{
+            $output  = array('status'=>false,'msg'=>"data not found.",'data'=>'');
+        }
+        return json_encode($output);
     }
 }
 ?>

@@ -1,6 +1,5 @@
 <?php
-
-    //  1:11
+    
     class framework{
        
        
@@ -37,6 +36,7 @@
 
         public function input($inputName){
 
+            
             if($_SERVER['REQUEST_METHOD'] == "POST" || $_SERVER['REQUEST_METHOD'] == 'post'){
       
                return trim(strip_tags($_POST[$inputName]));

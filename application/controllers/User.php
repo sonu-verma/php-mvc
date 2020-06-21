@@ -100,20 +100,19 @@ class User extends framework{
 
             $returnType = $this->data->insertToken($sesssionData);
             if($returnType){
-                $output  = array('status'=>true,'msg'=>"match.",'token_id'=>$token_id);
+                $output  = array('status'=>true,'msg'=>"match.",'token_id'=>$token_id,'user_id'=>$user_id);
             }else{
-                $output  = array('status'=>false,'msg'=>"something went wrong.",'token_id'=>'');
+                $output  = array('status'=>false,'msg'=>"something went wrong.",'token_id'=>'','user_id'=>'');
             }
-            
-           
         }else{
-            $output  = array('status'=>false,'msg'=>"data not found.",'token_id'=>'');
+            $output  = array('status'=>false,'msg'=>"data not found.",'token_id'=>'','user_id'=>'');
         }
         echo json_encode($output);
     }
 
     public function profile($id){
-        $token_id =$this->input('access_token');
+        $headersData = getallheaders();
+        $token_id = $headersData['x-access_token'];
         $checkValidUser =  $this->data->checkToken($token_id);
 
         if($checkValidUser){
@@ -131,7 +130,7 @@ class User extends framework{
                     $output  = array('status'=>false,'msg'=>"data not found.",'data'=>'');
                 }
             }else{
-                $output  = array('status'=>false,'msg'=>"not an valid user.",'data'=>'');
+                $output  = array('status'=>false,'msg'=>"Your session has been expired.Please login and try again.",'data'=>'');
             }
             
         }else{

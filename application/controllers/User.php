@@ -112,7 +112,7 @@ class User extends framework{
 
     public function profile($id){
         $headersData = getallheaders();
-        $token_id = $headersData['access_token'];
+        $token_id = $headersData['x-access_token'];
         $checkValidUser =  $this->data->checkToken($token_id);
 
         if($checkValidUser){
